@@ -4450,12 +4450,13 @@ echo "***"
 echo "running codes to setup interface ports with fixed IP addresses"
 
 network_id=`openstack network show -f shell flat-lan-1-net | grep "^id=" | cut -d'"' -f 2`
-subnet_id=`openstack network show -f shell flat-lan-1-net | grep "^subnets=" | cut -d'"' -f 2`
+subnet_id1=`openstack network show -f shell flat-lan-1-net | grep "^subnets=" | cut -d'"' -f 2`
+subnet_id2='openstack network show -f shell flat-lan-1-subnet | grep "^subnets=" | cut -d'"' -f 2'
 
 # See https://docs.openstack.org/python-openstackclient/pike/cli/command-objects/port.html
-openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.21 testport1
-openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.22 testport2
-openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id},ip-address=10.11.10.23 testport3
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id1},ip-address=10.11.10.21 testport1
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id2},ip-address=10.11.10.22 testport2
+openstack port create --network ${network_id} --fixed-ip subnet=${subnet_id2},ip-address=10.11.10.23 testport3
 
 # See https://docs.openstack.org/project-install-guide/baremetal/draft/configure-glance-images.html
 wget -O /tmp/setup/OL7.vmdk https://clemson.box.com/shared/static/5dukzod4ftj9v3g5r8q0ktxzweuj2vvw.vmdk
