@@ -4448,6 +4448,7 @@ fi
 
 echo "***"
 echo "running codes to setup interface ports with fixed IP addresses"
+echo "newest commit 4:43am"
 
 network_id=`openstack network show -f shell flat-lan-1-net | grep "^id=" | cut -d'"' -f 2`
 subnet_id1=`openstack network show -f shell flat-lan-1-net | grep "^subnets=" | cut -d'"' -f 2`
