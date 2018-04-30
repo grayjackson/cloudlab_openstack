@@ -4479,7 +4479,23 @@ port_id=`openstack port list -f value | grep port1 | cut -d' ' -f 1`
 
 # See https://docs.openstack.org/mitaka/install-guide-ubuntu/launch-instance-selfservice.html
 echo "creating instance"
-openstack server create --flavor m1.medium --security-group $security_id --image OL7compute --nic port-id=$port_id headnode
+openstack server create --flavor m1.medium --security-group $security_id --image OL7head --nic port-id=$port_id headnode
+
+glance image-delete OL7head
+
+wget -O /tmp/setup/OL7compute.vmdk https://clemson.box.com/shared/static/6t9golp60sxchjgvihrng013h2c5w0px.vmdk
+echo "creating compute image"
+glance image-create --name OL7compute --disk-format vmdk --visibility public --container-format bare < /tmp/setup/OL7compute.vmdk
+
+port_id=`openstack port list -f value | grep port2 | cut -d' ' -f 1`
+openstack server create --flavor m1.medium --security-group $security_id --image OL7compute --nic port-id=$port_id compute1
+
+port_id=`openstack port list -f value | grep port3 | cut -d' ' -f 1`
+openstack server create --flavor m1.medium --security-group $security_id --image OL7compute --nic port-id=$port_id compute2
+
+port_id=`openstack port list -f value | grep port4 | cut -d' ' -f 1`
+openstack server create --flavor m1.medium --security-group $security_id --image OL7compute --nic port-id=$port_id compute3
+
 
 
 
